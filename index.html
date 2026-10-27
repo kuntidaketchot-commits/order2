@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MINIMA STORE - ร้านค้ารับออเดอร์สินค้าออนไลน์</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            900: '#312e81',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/custom.css">
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col antialiased">
+
+    <!-- Top Announcement Bar -->
+    <aside aria-label="Announcement" class="bg-slate-900 text-slate-200 text-xs py-2 px-4">
+        <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-2">
+            <div class="flex items-center gap-2 mx-auto md:mx-0">
+                <span class="bg-indigo-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">โปรพิเศษ</span>
+                <span>🔥 ใส่โค้ด <strong class="text-amber-400 font-mono">WELCOME50</strong> ลดทันที 50.- หรือซื้อครบ 600.- ส่งฟรีทั่วประเทศ!</span>
+            </div>
+            <div class="hidden md:flex items-center gap-4 text-xs text-slate-400">
+                <span><i data-lucide="phone" class="inline w-3.5 h-3.5 mr-1"></i><span class="store-phone-text">089-123-4567</span></span>
+                <span><i data-lucide="message-circle" class="inline w-3.5 h-3.5 mr-1"></i>LINE: <span class="store-line-text">@minimashop</span></span>
+                <a href="manual.html" class="text-amber-300 hover:text-amber-200 font-semibold flex items-center gap-1">
+                    <i data-lucide="book-open" class="w-3.5 h-3.5"></i> คู่มือการใช้งานเว็บ &rarr;
+                </a>
+                <a href="admin.html" class="text-indigo-400 hover:text-indigo-300 font-semibold flex items-center gap-1">
+                    <i data-lucide="layout-dashboard" class="w-3.5 h-3.5"></i> ไปหน้าระบบแอดมิน (หลังบ้าน) &rarr;
+                </a>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Navigation Bar -->
+    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+            <!-- Brand Logo -->
+            <a href="index.html" class="flex items-center gap-3 shrink-0">
+                <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center text-white shadow-md shadow-indigo-200">
+                    <i data-lucide="store" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h1 class="font-extrabold text-xl text-slate-900 tracking-tight leading-none store-name-text">MINIMA STYLE</h1>
+                    <p class="text-xs text-slate-500 mt-1 store-slogan-text">ร้านรับออเดอร์สินค้าออนไลน์</p>
+                </div>
+            </a>
+
+            <!-- Search Bar -->
+            <div class="flex-1 max-w-lg hidden sm:block">
+                <div class="relative">
+                    <input type="text" id="search-products-input" 
+                        placeholder="ค้นหาสินค้า เช่น เสื้อยืด, กางเกง, กระเป๋า, แก้วน้ำ..." 
+                        class="w-full bg-slate-100 focus:bg-white text-sm pl-11 pr-4 py-2.5 rounded-full border border-transparent focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition-all outline-none">
+                    <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2"></i>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex items-center gap-2 sm:gap-3">
+                <!-- User Guide Button -->
+                <a href="manual.html" class="px-3 py-2 text-xs sm:text-sm font-semibold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 rounded-xl transition flex items-center gap-1.5 border border-indigo-200/60">
+                    <i data-lucide="book-open" class="w-4 h-4 text-indigo-600"></i>
+                    <span>คู่มือการใช้งาน</span>
+                </a>
+
+                <!-- Track Order Button -->
+                <button onclick="openTrackingModal()" class="px-3 py-2 text-xs sm:text-sm font-medium text-slate-600 hover:text-indigo-600 hover:bg-slate-100 rounded-xl transition flex items-center gap-1.5">
+                    <i data-lucide="truck" class="w-4 h-4"></i>
+                    <span class="hidden md:inline">เช็คสถานะพัสดุ</span>
+                </button>
+
+                <!-- Admin Link (Mobile) -->
+                <a href="admin.html" class="md:hidden p-2 text-slate-600 hover:text-indigo-600 hover:bg-slate-100 rounded-xl" title="ระบบแอดมิน">
+                    <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                </a>
+
+                <!-- Cart Button -->
+                <button onclick="openCartDrawer()" class="relative p-2.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-2xl transition flex items-center gap-2">
+                    <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+                    <span class="text-xs font-bold hidden sm:inline">ตะกร้า</span>
+                    <span id="cart-badge-count" class="hidden absolute -top-1.5 -right-1.5 bg-rose-500 text-white text-[11px] font-extrabold w-5 h-5 rounded-full flex items-center justify-center ring-2 ring-white">
+                        0
+                    </span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Search Bar (Only on small screens) -->
+        <div class="sm:hidden px-4 pb-3">
+            <div class="relative">
+                <input type="text" oninput="searchQuery = this.value; renderProducts();" 
+                    placeholder="ค้นหาสินค้า..." 
+                    class="w-full bg-slate-100 focus:bg-white text-sm pl-10 pr-4 py-2 rounded-xl border border-transparent focus:border-indigo-500 outline-none">
+                <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
+
+        <!-- Hero Banner Carousel / Promotional Highlight -->
+        <section class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-indigo-900 via-indigo-800 to-purple-900 text-white shadow-xl">
+            <div class="absolute -right-16 -top-16 w-80 h-80 rounded-full bg-indigo-500/20 blur-3xl pointer-events-none"></div>
+            <div class="absolute -left-16 -bottom-16 w-80 h-80 rounded-full bg-purple-500/20 blur-3xl pointer-events-none"></div>
+            
+            <div class="relative z-10 px-6 sm:px-12 py-10 sm:py-14 max-w-2xl">
+                <span class="inline-flex items-center gap-1.5 bg-white/10 backdrop-blur-md px-3 py-1 rounded-full text-xs font-semibold text-indigo-200 border border-white/10 mb-4">
+                    <i data-lucide="sparkles" class="w-3.5 h-3.5 text-amber-300"></i> สั่งซื้อง่าย รับออเดอร์ไว ตรวจสอบได้ตลอด 24 ชม.
+                </span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight leading-tight">
+                    ช้อปสินค้าไลฟ์สไตล์ & แฟชั่น <br><span class="text-indigo-300">สั่งออนไลน์พร้อมส่งถึงหน้าบ้านคุณ</span>
+                </h2>
+                <p class="mt-3 text-sm sm:text-base text-slate-300 leading-relaxed">
+                    เลือกสินค้าที่ต้องการ ใส่ตะกร้า กรอกที่อยู่ และสแกนชำระผ่าน PromptPay QR Code หรือแนบสลิป ได้สะดวกรวดเร็ว
+                </p>
+                <div class="mt-6 flex flex-wrap items-center gap-3">
+                    <a href="#catalog-section" class="px-6 py-3 bg-white text-indigo-900 font-bold rounded-xl shadow-lg hover:bg-slate-100 transition active:scale-95 text-sm flex items-center gap-2">
+                        <i data-lucide="shopping-cart" class="w-4 h-4"></i> เริ่มสั่งซื้อสินค้า
+                    </a>
+                    <button onclick="openTrackingModal()" class="px-5 py-3 bg-white/10 hover:bg-white/20 text-white font-medium rounded-xl backdrop-blur-md border border-white/10 transition text-sm flex items-center gap-2">
+                        <i data-lucide="search" class="w-4 h-4"></i> ตรวจสอบสถานะออเดอร์
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Categories Filter Section -->
+        <section id="catalog-section" class="space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div>
+                    <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2">
+                        <i data-lucide="layout-grid" class="w-5 h-5 text-indigo-600"></i> หมวดหมู่สินค้า
+                    </h2>
+                    <p class="text-xs text-slate-500">เลือกดูสินค้าตามประเภทที่คุณสนใจ</p>
+                </div>
+                <!-- Category Pills Container -->
+                <div id="categories-container" class="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+            <!-- Products Grid Container -->
+            <div id="products-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 pt-2">
+                <!-- Populated by JS -->
+            </div>
+        </section>
+
+        <!-- Trust Badges Section -->
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-6 border-t border-slate-200">
+            <div class="bg-white p-5 rounded-2xl border border-slate-200/80 flex items-center gap-4">
+                <div class="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
+                    <i data-lucide="shield-check" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h4 class="font-bold text-slate-800 text-sm">รับประกันคุณภาพสินค้า</h4>
+                    <p class="text-xs text-slate-500">สินค้าคัดเกรด ตรวจสอบก่อนส่งทุกชิ้น</p>
+                </div>
+            </div>
+            <div class="bg-white p-5 rounded-2xl border border-slate-200/80 flex items-center gap-4">
+                <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+                    <i data-lucide="qr-code" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h4 class="font-bold text-slate-800 text-sm">สแกนจ่ายสะดวก ปลอดภัย</h4>
+                    <p class="text-xs text-slate-500">รองรับ PromptPay QR พร้อมแนบสลิปทันที</p>
+                </div>
+            </div>
+            <div class="bg-white p-5 rounded-2xl border border-slate-200/80 flex items-center gap-4">
+                <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0">
+                    <i data-lucide="truck" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h4 class="font-bold text-slate-800 text-sm">จัดส่งพัสดุรวดเร็ว</h4>
+                    <p class="text-xs text-slate-500">มีเลข Tracking เช็คสถานะได้เรียลไทม์</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 mt-16 text-slate-600">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="space-y-3 md:col-span-2">
+                    <div class="flex items-center gap-2">
+                        <div class="w-8 h-8 rounded-xl bg-indigo-600 flex items-center justify-center text-white">
+                            <i data-lucide="store" class="w-4 h-4"></i>
+                        </div>
+                        <span class="font-bold text-slate-900 store-name-text">MINIMA STYLE</span>
+                    </div>
+                    <p class="text-xs text-slate-500 leading-relaxed store-slogan-text">
+                        ระบบสั่งซื้อสินค้าออนไลน์ สะดวก รวดเร็ว พร้อมระบบบริหารจัดการออเดอร์หลังบ้าน
+                    </p>
+                    <p class="text-xs text-slate-500">
+                        <i data-lucide="map-pin" class="inline w-3.5 h-3.5 mr-1"></i>
+                        <span class="store-address-text">กรุงเทพมหานคร</span>
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="font-bold text-sm text-slate-900 mb-3">บริการลูกค้า</h4>
+                    <ul class="text-xs space-y-2">
+                        <li><a href="javascript:void(0)" onclick="openTrackingModal()" class="hover:text-indigo-600">เช็คสถานะคำสั่งซื้อ</a></li>
+                        <li><a href="javascript:void(0)" onclick="openCartDrawer()" class="hover:text-indigo-600">ตรวจสอบตะกร้าสินค้า</a></li>
+                        <li><span class="text-slate-500">ติดต่อแอดมิน: <span class="store-phone-text">089-123-4567</span></span></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-bold text-sm text-slate-900 mb-3">เจ้าของร้าน</h4>
+                    <p class="text-xs text-slate-500 mb-3">เข้าสู่แผงควบคุมแอดมินเพื่อดูคำสั่งซื้อและจัดการสินค้า</p>
+                    <a href="admin.html" class="inline-flex items-center gap-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 px-4 py-2 rounded-xl text-xs font-semibold transition">
+                        <i data-lucide="shield" class="w-4 h-4"></i> เข้าสู่ระบบแอดมิน &rarr;
+                    </a>
+                </div>
+            </div>
+
+            <div class="mt-8 pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-2">
+                <p>&copy; 2026 MINIMA STYLE Order System. All rights reserved.</p>
+                <p>ระบบเว็บรับออเดอร์สินค้าพร้อมใช้งาน</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ==================== MODAL: PRODUCT DETAIL ==================== -->
+    <div id="product-detail-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-200">
+        <div class="modal-backdrop fixed inset-0" onclick="closeProductModal()"></div>
+        <div class="modal-content relative bg-white w-full max-w-2xl rounded-3xl shadow-2xl overflow-hidden scale-95 transition-transform duration-200 z-10 flex flex-col md:flex-row max-h-[90vh]">
+            
+            <!-- Close button -->
+            <button onclick="closeProductModal()" class="absolute top-4 right-4 z-20 w-8 h-8 rounded-full bg-white/80 hover:bg-white text-slate-600 flex items-center justify-center shadow-md transition">
+                ✕
+            </button>
+
+            <!-- Product Image -->
+            <div class="w-full md:w-1/2 bg-slate-100 relative min-h-[260px] md:min-h-full">
+                <img id="modal-product-img" src="" alt="Product" class="w-full h-full object-cover">
+            </div>
+
+            <!-- Product Details -->
+            <div class="w-full md:w-1/2 p-6 overflow-y-auto flex flex-col justify-between">
+                <div class="space-y-4">
+                    <div>
+                        <span id="modal-product-category" class="text-xs font-semibold text-indigo-600 uppercase tracking-wide"></span>
+                        <h3 id="modal-product-name" class="text-xl font-bold text-slate-900 mt-1"></h3>
+                    </div>
+
+                    <div class="flex items-baseline gap-2">
+                        <span id="modal-product-price" class="text-2xl font-extrabold text-indigo-600"></span>
+                        <span id="modal-product-origprice" class="text-sm text-slate-400 line-through"></span>
+                    </div>
+
+                    <p id="modal-product-desc" class="text-xs text-slate-600 leading-relaxed"></p>
+
+                    <!-- Sizes -->
+                    <div id="modal-sizes-container" class="space-y-1.5 hidden">
+                        <label class="text-xs font-bold text-slate-700">เลือกขนาด / ไซส์:</label>
+                        <div id="modal-sizes-list" class="flex flex-wrap gap-2"></div>
+                    </div>
+
+                    <!-- Colors -->
+                    <div id="modal-colors-container" class="space-y-1.5 hidden">
+                        <label class="text-xs font-bold text-slate-700">เลือกสี / ลาย:</label>
+                        <div id="modal-colors-list" class="flex flex-wrap gap-2"></div>
+                    </div>
+
+                    <!-- Quantity -->
+                    <div class="space-y-1.5 pt-2 border-t border-slate-100">
+                        <div class="flex items-center justify-between">
+                            <label class="text-xs font-bold text-slate-700">จำนวนที่ต้องการ:</label>
+                            <span id="modal-product-stock" class="text-xs text-slate-400"></span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <div class="flex items-center border border-slate-200 rounded-xl bg-slate-50 overflow-hidden">
+                                <button onclick="changeModalQty(-1)" class="w-9 h-9 flex items-center justify-center text-slate-600 hover:bg-slate-200 transition font-bold text-base">-</button>
+                                <input type="text" id="modal-qty-input" value="1" readonly class="w-12 text-center text-sm font-bold bg-transparent text-slate-800">
+                                <button onclick="changeModalQty(1)" class="w-9 h-9 flex items-center justify-center text-slate-600 hover:bg-slate-200 transition font-bold text-base">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add to Cart Action -->
+                <div class="mt-6 pt-4 border-t border-slate-100">
+                    <button id="btn-add-to-cart" onclick="addToCartFromModal()" class="w-full py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-2xl shadow-lg shadow-indigo-200 transition flex items-center justify-center gap-2 active:scale-98">
+                        <i data-lucide="shopping-cart" class="w-5 h-5"></i>
+                        <span>เพิ่มลงในตะกร้า</span>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ==================== DRAWER: CART SLIDE-OVER ==================== -->
+    <div id="cart-drawer" class="fixed inset-0 z-50 overflow-hidden hidden">
+        <div class="drawer-backdrop fixed inset-0 opacity-0" onclick="closeCartDrawer()"></div>
+        <div class="fixed inset-y-0 right-0 max-w-full flex">
+            <div class="drawer-panel w-screen max-w-md bg-white shadow-2xl flex flex-col translate-x-full">
+                
+                <!-- Drawer Header -->
+                <div class="p-5 border-b border-slate-100 flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <div class="w-8 h-8 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
+                            <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-900 text-base">ตะกร้าสินค้าของฉัน</h3>
+                    </div>
+                    <button onclick="closeCartDrawer()" class="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-100 transition">
+                        ✕
+                    </button>
+                </div>
+
+                <!-- Free Shipping Progress -->
+                <div class="bg-indigo-50/70 p-3.5 border-b border-indigo-100/50">
+                    <div id="free-shipping-text" class="text-xs text-indigo-900 mb-1.5 flex items-center justify-between">
+                        <span>ช้อปเพิ่มอีกเพื่อรับสิทธิ์ส่งฟรี!</span>
+                    </div>
+                    <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+                        <div id="free-shipping-progress" class="bg-indigo-600 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <!-- Cart Items Container -->
+                <div id="cart-items-container" class="flex-1 overflow-y-auto p-5 space-y-1">
+                    <!-- Populated by JS -->
+                </div>
+
+                <!-- Empty Cart State -->
+                <div id="cart-empty-state" class="flex-1 flex flex-col items-center justify-center p-8 text-center text-slate-400 hidden">
+                    <div class="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center text-slate-300 mb-3">
+                        <i data-lucide="shopping-cart" class="w-8 h-8"></i>
+                    </div>
+                    <p class="font-bold text-slate-700 text-base">ไม่มีสินค้าในตะกร้า</p>
+                    <p class="text-xs mt-1">เลือกช้อปสินค้าที่คุณชอบเพื่อสั่งซื้อได้เลย</p>
+                    <button onclick="closeCartDrawer()" class="mt-4 px-5 py-2.5 bg-indigo-600 text-white text-xs font-bold rounded-xl shadow-md hover:bg-indigo-700 transition">
+                        เลือกสินค้าเลย
+                    </button>
+                </div>
+
+                <!-- Drawer Footer & Checkout Action -->
+                <div id="cart-drawer-footer" class="p-5 border-t border-slate-100 bg-slate-50/50 space-y-3">
+                    
+                    <!-- Coupon Code Input -->
+                    <div>
+                        <div class="flex gap-2">
+                            <input type="text" id="coupon-input" placeholder="ใส่โค้ดส่วนลด เช่น WELCOME50" 
+                                class="flex-1 bg-white border border-slate-200 text-xs px-3 py-2 rounded-xl uppercase outline-none focus:border-indigo-500">
+                            <button onclick="applyCouponCode()" class="px-3.5 py-2 bg-slate-800 hover:bg-slate-900 text-white text-xs font-semibold rounded-xl transition">
+                                ใช้โค้ด
+                            </button>
+                        </div>
+                        <div id="applied-coupon-badge"></div>
+                    </div>
+
+                    <!-- Price Calculations -->
+                    <div class="space-y-1.5 text-xs pt-2">
+                        <div class="flex justify-between text-slate-500">
+                            <span>ยอดรวมสินค้า</span>
+                            <span id="cart-subtotal" class="font-medium text-slate-700">฿0</span>
+                        </div>
+                        <div id="cart-discount-row" class="flex justify-between text-emerald-600 hidden">
+                            <span>ส่วนลดคูปอง</span>
+                            <span id="cart-discount" class="font-bold">-฿0</span>
+                        </div>
+                        <div class="flex justify-between text-slate-500">
+                            <span>ค่าจัดส่ง</span>
+                            <span id="cart-shipping" class="font-medium text-slate-700">฿40</span>
+                        </div>
+                        <div class="flex justify-between text-sm font-extrabold text-slate-900 border-t border-slate-200 pt-2">
+                            <span>ยอดสุทธิ</span>
+                            <span id="cart-total" class="text-indigo-600 text-base">฿0</span>
+                        </div>
+                    </div>
+
+                    <!-- Checkout Button -->
+                    <button onclick="proceedToCheckout()" class="w-full py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-2xl shadow-lg shadow-indigo-200 transition flex items-center justify-center gap-2 active:scale-98">
+                        <span>ดำเนินการสั่งซื้อ (Checkout)</span>
+                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== MODAL: CHECKOUT PROCESS ==================== -->
+    <div id="checkout-modal" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 hidden opacity-0 transition-opacity duration-200">
+        <div class="modal-backdrop fixed inset-0" onclick="closeCheckoutModal()"></div>
+        <div class="modal-content relative bg-white w-full max-w-2xl rounded-3xl shadow-2xl overflow-hidden scale-95 transition-transform duration-200 z-10 flex flex-col max-h-[92vh]">
+            
+            <!-- Modal Header with Progress Step -->
+            <div class="p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/70">
+                <div>
+                    <h3 class="font-bold text-slate-900 text-base">ดำเนินการสั่งซื้อสินค้า</h3>
+                    <p class="text-xs text-slate-500">กรอกข้อมูลและชำระเงินเพื่อยืนยันออเดอร์</p>
+                </div>
+                <button onclick="closeCheckoutModal()" class="w-8 h-8 rounded-full hover:bg-slate-200 flex items-center justify-center text-slate-500 transition">✕</button>
+            </div>
+
+            <!-- Steps Header Tracker -->
+            <div class="px-6 py-3 border-b border-slate-100 flex items-center justify-between text-xs font-semibold">
+                <div class="flex items-center gap-2">
+                    <span id="step-indicator-1" class="step-node w-6 h-6 rounded-full bg-indigo-600 text-white flex items-center justify-center text-xs">1</span>
+                    <span class="text-slate-800">1. ข้อมูลผู้สั่งซื้อ</span>
+                </div>
+                <div class="h-0.5 w-8 bg-slate-200"></div>
+                <div class="flex items-center gap-2">
+                    <span id="step-indicator-2" class="step-node w-6 h-6 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center text-xs">2</span>
+                    <span class="text-slate-500">2. ชำระเงิน/แนบสลิป</span>
+                </div>
+                <div class="h-0.5 w-8 bg-slate-200"></div>
+                <div class="flex items-center gap-2">
+                    <span id="step-indicator-3" class="step-node w-6 h-6 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center text-xs">3</span>
+                    <span class="text-slate-500">3. สำเร็จ</span>
+                </div>
+            </div>
+
+            <!-- Modal Body (Steps Content) -->
+            <div class="p-6 overflow-y-auto flex-1">
+                
+                <!-- ================= STEP 1: CUSTOMER INFORMATION ================= -->
+                <div id="checkout-step-1" class="checkout-step-content space-y-4">
+                    <h4 class="font-bold text-sm text-slate-800 flex items-center gap-2">
+                        <i data-lucide="map-pin" class="w-4 h-4 text-indigo-600"></i> ที่อยู่สำหรับจัดส่งพัสดุ
+                    </h4>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                        <div>
+                            <label class="block font-medium text-slate-700 mb-1">ชื่อ-นามสกุล ผู้รับ <span class="text-rose-500">*</span></label>
+                            <input type="text" id="cust-name" placeholder="เช่น คุณสมชาย มีสุข" 
+                                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 outline-none focus:border-indigo-500 focus:bg-white transition">
+                        </div>
+                        <div>
+                            <label class="block font-medium text-slate-700 mb-1">เบอร์โทรศัพท์ (ติดต่อรับของ) <span class="text-rose-500">*</span></label>
+                            <input type="tel" id="cust-phone" placeholder="เช่น 0812345678" 
+                                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 outline-none focus:border-indigo-500 focus:bg-white transition">
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label class="block font-medium text-slate-700 mb-1">อีเมล (สำหรับรับใบเสร็จ) <span class="text-slate-400 font-normal">(ไม่บังคับ)</span></label>
+                            <input type="email" id="cust-email" placeholder="example@email.com" 
+                                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 outline-none focus:border-indigo-500 focus:bg-white transition">
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label class="block font-medium text-slate-700 mb-1">บ้านเลขที่, หมู่, อาคาร, ซอย, ถนน <span class="text-rose-500">*</span></label>
+                            <input type="text" id="cust-address" placeholder="เช่น 123/45 ซอยพหลโยธิน 14" 
+                                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 outline-none focus:border-indigo-500 focus:bg-white transition">
+                        </div>
+                        <div>
+                            <label class="block font-medium text-slate-700 mb-1">แขวง / ตำบล / อำเภอ / เขต <span class="text-rose-500">*</span></label>
+                            <input type="text" id="cust-district" placeholder="เช่น พญาไท" 
+                                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 outline-none focus:border-indigo-500 focus:bg-white transition">
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label class="block font-medium text-slate-700 mb-1">จังหวัด <span class="text-rose-500">*</span></label>
+                                <input type="text" id="cust-province" placeholder="กรุงเทพมหานคร" 
+                                    class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 outline-none focus:border-indigo-500 focus:bg-white transition">
+                            </div>
+                            <div>
+                                <label class="block font-medium text-slate-700 mb-1">รหัสไปรษณีย์ <span class="text-rose-500">*</span></label>
+                                <input type="text" id="cust-postcode" placeholder="10400" 
+                                    class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 outline-none focus:border-indigo-500 focus:bg-white transition">
+                            </div>
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label class="block font-medium text-slate-700 mb-1">หมายเหตุถึงผู้ขาย / ฝากพัสดุ</label>
+                            <input type="text" id="cust-note" placeholder="เช่น ฝากไว้ที่ป้อมยาม, โทรหาก่อนส่ง" 
+                                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 outline-none focus:border-indigo-500 focus:bg-white transition">
+                        </div>
+                    </div>
+
+                    <!-- Shipping Options -->
+                    <div class="pt-2">
+                        <label class="block font-bold text-xs text-slate-800 mb-2">เลือกรูปแบบการจัดส่ง:</label>
+                        <div class="space-y-2 text-xs">
+                            <label class="flex items-center justify-between p-3 border border-slate-200 rounded-xl cursor-pointer hover:bg-slate-50 transition">
+                                <div class="flex items-center gap-2.5">
+                                    <input type="radio" name="shipping-type" value="standard" checked class="text-indigo-600 focus:ring-indigo-500">
+                                    <div>
+                                        <div class="font-bold text-slate-800">จัดส่งมาตรฐาน (Standard Express)</div>
+                                        <div class="text-[11px] text-slate-500">รับสินค้าภายใน 1-3 วันทำการ (Flash / Kerry)</div>
+                                    </div>
+                                </div>
+                                <span class="font-bold text-slate-700">฿40 (ครบ 600.- ฟรี)</span>
+                            </label>
+
+                            <label class="flex items-center justify-between p-3 border border-slate-200 rounded-xl cursor-pointer hover:bg-slate-50 transition">
+                                <div class="flex items-center gap-2.5">
+                                    <input type="radio" name="shipping-type" value="express" class="text-indigo-600 focus:ring-indigo-500">
+                                    <div>
+                                        <div class="font-bold text-slate-800">จัดส่งด่วนพิเศษ (EMS ด่วนพิเศษ)</div>
+                                        <div class="text-[11px] text-slate-500">รับสินค้าใน 1-2 วันทำการ รวดเร็วทันใจ</div>
+                                    </div>
+                                </div>
+                                <span class="font-bold text-slate-700">฿65</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Order Preview Mini Box -->
+                    <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200/80 mt-4">
+                        <div class="font-bold text-xs text-slate-700 mb-2 flex items-center justify-between">
+                            <span>สรุปรายการสั่งซื้อ</span>
+                            <span class="text-indigo-600 font-semibold" id="checkout-total-val">฿0</span>
+                        </div>
+                        <div id="checkout-items-preview" class="divide-y divide-slate-100 max-h-24 overflow-y-auto"></div>
+                    </div>
+
+                    <div class="pt-3">
+                        <button onclick="validateStep1()" class="w-full py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-2xl shadow-lg shadow-indigo-200 transition flex items-center justify-center gap-2">
+                            <span>ถัดไป: เลือกช่องทางชำระเงิน</span>
+                            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ================= STEP 2: PAYMENT & SLIP UPLOAD ================= -->
+                <div id="checkout-step-2" class="checkout-step-content space-y-5 hidden">
+                    
+                    <!-- Total to Pay Highlight -->
+                    <div class="bg-gradient-to-r from-indigo-600 to-violet-600 text-white p-4 rounded-2xl flex items-center justify-between shadow-md">
+                        <div>
+                            <span class="text-xs text-indigo-100">ยอดที่ต้องชำระทั้งหมด:</span>
+                            <h3 id="checkout-pay-total-val" class="text-2xl font-extrabold">฿0</h3>
+                        </div>
+                        <span class="bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-xs font-semibold">
+                            รอการชำระเงิน
+                        </span>
+                    </div>
+
+                    <!-- Payment Method Selector -->
+                    <div>
+                        <label class="block font-bold text-xs text-slate-800 mb-2">เลือกช่องทางการชำระเงิน:</label>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                            <div onclick="selectPaymentMethod('promptpay')" data-method="promptpay" 
+                                class="payment-method-box border-2 border-indigo-600 bg-indigo-50/50 ring-2 ring-indigo-100 p-3 rounded-2xl cursor-pointer text-center transition">
+                                <i data-lucide="qr-code" class="w-6 h-6 mx-auto mb-1 text-indigo-600"></i>
+                                <div class="font-bold text-xs text-slate-800">สแกน QR พร้อมเพย์</div>
+                                <div class="text-[10px] text-slate-500">ยอดตรง สแกนจ่ายง่าย</div>
+                            </div>
+
+                            <div onclick="selectPaymentMethod('bank_transfer')" data-method="bank_transfer" 
+                                class="payment-method-box border border-slate-200 p-3 rounded-2xl cursor-pointer text-center hover:bg-slate-50 transition">
+                                <i data-lucide="landmark" class="w-6 h-6 mx-auto mb-1 text-slate-600"></i>
+                                <div class="font-bold text-xs text-slate-800">โอนผ่านบัญชีธนาคาร</div>
+                                <div class="text-[10px] text-slate-500">KBANK / SCB</div>
+                            </div>
+
+                            <div onclick="selectPaymentMethod('cod')" data-method="cod" 
+                                class="payment-method-box border border-slate-200 p-3 rounded-2xl cursor-pointer text-center hover:bg-slate-50 transition">
+                                <i data-lucide="hand-coins" class="w-6 h-6 mx-auto mb-1 text-slate-600"></i>
+                                <div class="font-bold text-xs text-slate-800">เก็บเงินปลายทาง (COD)</div>
+                                <div class="text-[10px] text-slate-500">จ่ายตอนรับของ</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section: PromptPay QR Info -->
+                    <div id="promptpay-info-section" class="bg-slate-50 border border-slate-200 p-4 rounded-2xl space-y-3">
+                        <div class="text-center">
+                            <span class="inline-block bg-blue-900 text-white text-[11px] font-bold px-3 py-0.5 rounded-full mb-2">
+                                PromptPay พร้อมเพย์
+                            </span>
+                            <div class="w-48 h-48 mx-auto bg-white p-2 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-center">
+                                <img id="promptpay-qr-img" src="" alt="PromptPay QR" class="w-full h-full object-contain">
+                            </div>
+                            <p class="text-xs text-slate-500 mt-2">สแกนผ่านแอปธนาคารใดก็ได้ ยอดเงินจะขึ้นให้อัตโนมัติ</p>
+                            <div class="mt-2 text-xs font-semibold text-slate-700">
+                                <span>เบอร์พร้อมเพย์: <strong id="checkout-pp-number" class="text-indigo-600 font-mono">089-123-4567</strong></span>
+                                <button onclick="copyText(document.getElementById('checkout-pp-number').textContent)" class="ml-2 text-indigo-600 hover:underline text-[11px]"><i data-lucide="copy" class="inline w-3 h-3"></i> คัดลอก</button>
+                                <div class="text-[11px] text-slate-500 mt-0.5" id="checkout-pp-name">นายมินิมอล มีสุข</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section: Bank Transfer Info -->
+                    <div id="bank-info-section" class="bg-slate-50 border border-slate-200 p-4 rounded-2xl space-y-3 hidden">
+                        <div class="p-3 bg-white rounded-xl border border-slate-200 flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-bold text-xs">
+                                    KBANK
+                                </div>
+                                <div class="text-xs">
+                                    <div class="font-bold text-slate-800" id="checkout-bank-name">ธนาคารกสิกรไทย</div>
+                                    <div class="text-slate-600 font-mono font-bold" id="checkout-bank-acc">045-8-91234-5</div>
+                                    <div class="text-slate-400 text-[10px]" id="checkout-bank-accname">บจก. มินิมอล สไตล์ สโตร์</div>
+                                </div>
+                            </div>
+                            <button onclick="copyText(document.getElementById('checkout-bank-acc').textContent)" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-medium transition flex items-center gap-1">
+                                <i data-lucide="copy" class="w-3.5 h-3.5"></i> คัดลอก
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Section: COD Info -->
+                    <div id="cod-info-section" class="bg-amber-50 border border-amber-200 p-4 rounded-2xl text-xs text-amber-800 space-y-1 hidden">
+                        <div class="font-bold flex items-center gap-1.5">
+                            <i data-lucide="info" class="w-4 h-4"></i> ข้อมูลบริการเก็บเงินปลายทาง
+                        </div>
+                        <p>คุณสามารถชำระเงินสดหรือโอนจ่ายกับเจ้าหน้าที่ขนส่ง ณ วันที่พัสดุจัดส่งถึงบ้าน</p>
+                        <p class="text-amber-900 font-semibold pt-1">กรุณารับโทรศัพท์เจ้าหน้าที่ขนส่งในวันจัดส่งพัสดุ</p>
+                    </div>
+
+                    <!-- Section: Slip Upload (For PromptPay & Bank) -->
+                    <div id="slip-upload-section" class="space-y-2">
+                        <label class="block font-bold text-xs text-slate-800">
+                            แนบหลักฐานสลิปโอนเงิน: <span class="text-slate-400 font-normal">(ช่วยให้จัดส่งไวขึ้น)</span>
+                        </label>
+                        
+                        <!-- Upload Input Box -->
+                        <div id="slip-upload-placeholder" class="border-2 border-dashed border-slate-300 hover:border-indigo-500 rounded-2xl p-4 text-center cursor-pointer transition bg-slate-50/50" onclick="document.getElementById('slip-file-input').click()">
+                            <input type="file" id="slip-file-input" accept="image/*" class="hidden" onchange="handleSlipUpload(event)">
+                            <i data-lucide="upload-cloud" class="w-8 h-8 mx-auto text-slate-400 mb-1"></i>
+                            <div class="text-xs font-medium text-slate-700">คลิกเพื่อเลือกรูปภาพสลิปโอนเงิน</div>
+                            <div class="text-[11px] text-slate-400 mt-0.5">รองรับไฟล์ JPG, PNG (สูงสุด 5 MB)</div>
+                        </div>
+
+                        <!-- Slip Preview Container -->
+                        <div id="slip-preview-container" class="relative hidden bg-slate-100 p-2 rounded-2xl border border-slate-200 max-w-xs mx-auto">
+                            <img id="slip-preview-img" src="" alt="Slip Preview" class="w-full max-h-48 object-contain rounded-xl">
+                            <button onclick="removeUploadedSlip()" class="absolute -top-2 -right-2 bg-rose-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs shadow-md">✕</button>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="pt-2 flex items-center gap-3">
+                        <button onclick="goToCheckoutStep(1)" class="w-1/3 py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium rounded-2xl transition text-xs">
+                            &larr; ย้อนกลับ
+                        </button>
+                        <button onclick="submitOrder()" class="w-2/3 py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-2xl shadow-lg shadow-emerald-200 transition flex items-center justify-center gap-2 text-sm active:scale-98">
+                            <i data-lucide="check-circle" class="w-4 h-4"></i>
+                            <span>ยืนยันการสั่งซื้อ</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ================= STEP 3: ORDER SUCCESS ================= -->
+                <div id="checkout-step-3" class="checkout-step-content text-center py-4 space-y-4 hidden">
+                    <div class="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 mx-auto flex items-center justify-center shadow-md">
+                        <i data-lucide="check" class="w-9 h-9"></i>
+                    </div>
+
+                    <div>
+                        <h3 class="text-xl font-bold text-slate-900">สั่งซื้อสินค้าสำเร็จแล้ว! 🎉</h3>
+                        <p class="text-xs text-slate-500 mt-1">ทางร้านได้รับข้อมูลคำสั่งซื้อของคุณเรียบร้อยแล้ว</p>
+                    </div>
+
+                    <!-- Order Info Card -->
+                    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 text-left text-xs space-y-2 max-w-md mx-auto">
+                        <div class="flex justify-between items-center pb-2 border-b border-slate-200">
+                            <span class="text-slate-500">รหัสคำสั่งซื้อ:</span>
+                            <span id="success-order-id" class="font-bold text-indigo-600 font-mono text-sm"></span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-slate-500">สถานะคำสั่งซื้อ:</span>
+                            <span id="success-order-status" class="px-2.5 py-0.5 rounded-full text-xs font-semibold"></span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-slate-500">ยอดชำระสุทธิ:</span>
+                            <span id="success-order-total" class="font-extrabold text-slate-900 text-sm"></span>
+                        </div>
+                        <div class="pt-2 border-t border-slate-200 text-slate-600 text-[11px]">
+                            <div>ผู้รับ: <strong id="success-cust-name" class="text-slate-800"></strong> (โทร: <span id="success-cust-phone"></span>)</div>
+                            <div class="mt-0.5 truncate">ที่อยู่: <span id="success-cust-address"></span></div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex flex-col sm:flex-row gap-2 max-w-md mx-auto pt-2">
+                        <button id="btn-print-order" class="flex-1 py-3 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold rounded-xl text-xs flex items-center justify-center gap-1.5 transition">
+                            <i data-lucide="printer" class="w-4 h-4"></i> พิมพ์ใบเสร็จ
+                        </button>
+                        <button id="btn-track-this-order" class="flex-1 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-md shadow-indigo-100 transition">
+                            <i data-lucide="truck" class="w-4 h-4"></i> ติดตามสถานะออเดอร์
+                        </button>
+                    </div>
+
+                    <div>
+                        <button onclick="closeCheckoutModal()" class="text-xs text-slate-400 hover:text-slate-600 underline">
+                            กลับสู่หน้าหลัก / เลือกซื้อสินค้าต่อ
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ==================== MODAL: ORDER TRACKING ==================== -->
+    <div id="tracking-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-200">
+        <div class="modal-backdrop fixed inset-0" onclick="closeTrackingModal()"></div>
+        <div class="modal-content relative bg-white w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden scale-95 transition-transform duration-200 z-10 flex flex-col max-h-[90vh]">
+            
+            <div class="p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/70">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
+                        <i data-lucide="truck" class="w-4 h-4"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-900 text-base">ตรวจสอบสถานะคำสั่งซื้อ</h3>
+                </div>
+                <button onclick="closeTrackingModal()" class="w-8 h-8 rounded-full hover:bg-slate-200 flex items-center justify-center text-slate-500 transition">✕</button>
+            </div>
+
+            <div class="p-6 overflow-y-auto space-y-4">
+                <!-- Search input -->
+                <div class="flex gap-2">
+                    <input type="text" id="track-search-input" placeholder="กรอกรหัสออเดอร์ เช่น OD-261027-101 หรือเบอร์โทร" 
+                        class="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs outline-none focus:border-indigo-500 focus:bg-white uppercase font-mono">
+                    <button onclick="searchTrackingOrder()" class="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl transition flex items-center gap-1.5">
+                        <i data-lucide="search" class="w-3.5 h-3.5"></i> ค้นหา
+                    </button>
+                </div>
+
+                <!-- Not Found State -->
+                <div id="tracking-notfound-box" class="hidden text-center py-8 text-slate-400">
+                    <i data-lucide="alert-circle" class="w-12 h-12 mx-auto text-slate-300 mb-2"></i>
+                    <p class="font-medium text-slate-700 text-sm">ไม่พบคำสั่งซื้อนี้</p>
+                    <p class="text-xs">กรุณาตรวจสอบรหัสออเดอร์หรือเบอร์โทรศัพท์อีกครั้ง</p>
+                </div>
+
+                <!-- Tracking Result -->
+                <div id="tracking-result-box" class="space-y-5 hidden">
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2 text-xs">
+                        <div class="flex justify-between items-center">
+                            <span class="font-mono font-bold text-slate-900 text-sm" id="track-res-id"></span>
+                            <span id="track-res-status-badge"></span>
+                        </div>
+                        <div class="flex justify-between text-slate-500 text-[11px]">
+                            <span>วันที่สั่งซื้อ: <span id="track-res-date"></span></span>
+                            <span>ยอดรวม: <strong id="track-res-total" class="text-slate-800"></strong></span>
+                        </div>
+                        <div class="text-[11px] text-slate-600 pt-1">ผู้รับ: <span id="track-res-name"></span></div>
+                    </div>
+
+                    <!-- Carrier & Tracking No (If available) -->
+                    <div id="track-carrier-box" class="hidden bg-emerald-50 border border-emerald-200 p-3.5 rounded-2xl flex items-center justify-between text-xs">
+                        <div class="flex items-center gap-3">
+                            <div class="w-9 h-9 rounded-xl bg-emerald-600 text-white flex items-center justify-center">
+                                <i data-lucide="package-check" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <div class="font-bold text-emerald-900" id="track-carrier-name">Flash Express</div>
+                                <div class="font-mono font-bold text-emerald-700" id="track-tracking-no"></div>
+                            </div>
+                        </div>
+                        <button onclick="copyText(document.getElementById('track-tracking-no').textContent)" class="text-emerald-700 hover:underline text-[11px] font-semibold">
+                            คัดลอกเลขพัสดุ
+                        </button>
+                    </div>
+
+                    <!-- Status Timeline -->
+                    <div class="pt-2">
+                        <label class="block font-bold text-xs text-slate-800 mb-4">ลำดับขั้นตอนการจัดส่ง:</label>
+                        <div id="tracking-timeline" class="py-2"></div>
+                    </div>
+
+                    <!-- Items in order -->
+                    <div>
+                        <label class="block font-bold text-xs text-slate-800 mb-2">รายการสินค้าในออเดอร์นี้:</label>
+                        <div id="track-res-items" class="bg-white border border-slate-200 rounded-xl p-3 max-h-40 overflow-y-auto"></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Hidden Print Area -->
+    <div id="print-receipt" class="hidden"></div>
+
+    <!-- Application Scripts -->
+    <script src="js/store.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
